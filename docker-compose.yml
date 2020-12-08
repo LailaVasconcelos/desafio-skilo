@@ -1,0 +1,25 @@
+version: '2'
+services:
+    postgres:
+        image: postgres:10.6        # Choose your version
+        ports:
+        - "5432:5432"
+        volumes:
+        - db-data:/var/lib/postgresql/data
+        environment:
+            POSTGRES_USER: postgresuser
+            POSTGRES_PASSWORD: postgrespw
+            POSTGRES_DB: skilo_dev
+    pgadmin:
+        image: dpage/pgadmin4
+        links:
+            - postgres
+        ports:
+            - "5566:80"
+        environment:
+            PGADMIN_DEFAULT_EMAIL: admin@admin.com.br
+            PGADMIN_DEFAULT_PASSWORD: admin123456
+        restart: unless-stopped
+
+volumes:
+    db-data: {}

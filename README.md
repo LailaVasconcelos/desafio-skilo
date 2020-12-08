@@ -2,8 +2,8 @@
 
 ## Tarefas
 
-* Instalar extensões no vs code
-* Adicionar editorconfig
+* OK Instalar extensões no vs code
+* OK Adicionar editorconfig
 * Criar docker-compose com o banco e o pgadmin
 * Definir o schema da api
 * Criar o projeto phoenix e fazer merge do readme
