@@ -7,7 +7,7 @@
 * OK - Criar docker-compose com o banco e o pgadmin
 * OK - Definir o schema da api
 * Ok - Criar o projeto phoenix e fazer merge do readme
-* Adicionar o doctor e credo 
+* OK - Adicionar o doctor e credo 
 * Adicionar o CI (semaphore)
 * Adiconar e configurar absinthe
 * Definir o schema do banco de dados
