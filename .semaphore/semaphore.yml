@@ -1,0 +1,56 @@
+version: v1.0
+name: Desafio Skilo
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+
+blocks:
+  - name: "Set up"
+    task:
+      jobs:
+      - name: "Baixa dependencias e compila"
+        commands:
+          - checkout
+          - sem-version elixir 1.10.4
+          - cache restore
+
+          - mix local.rebar --fo
+          - mix deps.get
+          - mix do compile 
+          - MIX_ENV=test mix compile
+
+          - cache store
+
+  - name: "Análise estática de código"
+    task:
+      prologue:
+        commands:
+        - checkout
+        - sem-version elixir 1.10.4
+        - cache restore
+      jobs:
+      - name: credo
+        commands:
+        - mix deps.get
+        - mix credo
+
+      - name: formatter
+        commands:
+        - mix deps.get
+        - mix format mix.exs "lib/**/*.{ex,exs}" "test/**/*.{ex,exs}" --check-formatted
+
+  - name: "Executa testes"
+    task:
+      prologue:
+        commands:
+        - checkout
+        - sem-version elixir 1.10.4
+        - cache restore
+
+      jobs:
+      - name: "Testes Unitários"
+        commands:
+        - mix local.rebar --fo
+        - mix deps.get
+        - mix test

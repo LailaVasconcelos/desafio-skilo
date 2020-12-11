@@ -9,7 +9,7 @@
 * Ok - Criar o projeto phoenix e fazer merge do readme
 * OK - Adicionar o doctor e credo 
 * Adicionar o CI (semaphore)
-* Adiconar e configurar absinthe
+* Adicionar e configurar absinthe
 * Definir o schema do banco de dados
 
 ## Detalhes do desafio
