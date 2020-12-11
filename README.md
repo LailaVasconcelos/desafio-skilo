@@ -6,7 +6,7 @@
 * OK - Adicionar editorconfig
 * OK - Criar docker-compose com o banco e o pgadmin
 * OK - Definir o schema da api
-* Criar o projeto phoenix e fazer merge do readme
+* Ok - Criar o projeto phoenix e fazer merge do readme
 * Adicionar o doctor e credo 
 * Adicionar o CI (semaphore)
 * Adiconar e configurar absinthe
@@ -88,3 +88,13 @@ transferMoney(sender: <account_uuid>, address: <account_uuid>, amount: 45.5) {
 - Testes Unitários
 
 ---
+
+## Como usar
+
+To start your Phoenix server:
+
+  * Install dependencies with `mix deps.get`
+  * Create and migrate your database with `mix ecto.setup`
+  * Start Phoenix endpoint with `mix phx.server`
+
+Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
