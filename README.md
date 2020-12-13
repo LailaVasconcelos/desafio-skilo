@@ -89,6 +89,18 @@ transferMoney(sender: <account_uuid>, address: <account_uuid>, amount: 45.5) {
 
 ---
 
+## Esquema do banco
+
+- Tabela da conta corrente: CONTA
+  - uuid: UUID
+  - current_balance: BigInt
+- Tabela de transações: TRANSACAO
+  - uuid: UUID
+  - conta_uuid: UUID
+  - address: UUID
+  - amount: BigInt
+  - when: DateTime
+
 ## Como usar
 
 To start your Phoenix server:
