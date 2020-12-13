@@ -8,8 +8,8 @@
 * OK - Definir o schema da api
 * Ok - Criar o projeto phoenix e fazer merge do readme
 * OK - Adicionar o doctor e credo 
-* Adicionar o CI (semaphore)
-* Adicionar e configurar absinthe
+* OK - Adicionar o CI (semaphore)
+* OK - Adicionar e configurar absinthe
 * Definir o schema do banco de dados
 
 ## Detalhes do desafio

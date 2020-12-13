@@ -5,8 +5,14 @@ defmodule BancoWeb.Router do
     plug :accepts, ["json"]
   end
 
-  scope "/api", BancoWeb do
+  scope "/" do
     pipe_through :api
+
+    forward "/graph", Absinthe.Plug,
+      schema: BancoWeb.Schema
+
+    forward "/graphiql", Absinthe.Plug.GraphiQL,
+      schema: BancoWeb.Schema
   end
 
   # Enables LiveDashboard only for development
