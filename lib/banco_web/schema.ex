@@ -6,7 +6,11 @@ defmodule BancoWeb.Schema do
   import_types BancoWeb.Schema.DataTypes
 
   query do
-    
+    field :account, type: :conta do
+      arg :uuid, non_null(:string)
+
+      resolve &ContaResolver.account/3
+    end
   end
 
   mutation do
