@@ -1,17 +1,5 @@
 # desafio-skilo
 
-## Tarefas
-
-* OK - Instalar extensões no vs code
-* OK - Adicionar editorconfig
-* OK - Criar docker-compose com o banco e o pgadmin
-* OK - Definir o schema da api
-* Ok - Criar o projeto phoenix e fazer merge do readme
-* OK - Adicionar o doctor e credo 
-* OK - Adicionar o CI (semaphore)
-* OK - Adicionar e configurar absinthe
-* Definir o schema do banco de dados
-
 ## Detalhes do desafio
 
 ### Desafio: GraphBanking
@@ -88,6 +76,18 @@ transferMoney(sender: <account_uuid>, address: <account_uuid>, amount: 45.5) {
 - Testes Unitários
 
 ---
+
+## Tarefas
+
+* OK - Instalar extensões no vs code
+* OK - Adicionar editorconfig
+* OK - Criar docker-compose com o banco e o pgadmin
+* OK - Definir o schema da api
+* Ok - Criar o projeto phoenix e fazer merge do readme
+* OK - Adicionar o doctor e credo 
+* OK - Adicionar o CI (semaphore)
+* OK - Adicionar e configurar absinthe
+* OK - Definir o schema do banco de dados
 
 ## Esquema do banco
 

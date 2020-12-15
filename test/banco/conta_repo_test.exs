@@ -1,4 +1,5 @@
 defmodule Banco.ContaRepoTest do
+  @moduledoc false
   use Banco.DataCase
 
   alias Banco.ContaRepo

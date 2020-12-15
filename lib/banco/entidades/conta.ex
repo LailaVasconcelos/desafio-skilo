@@ -1,4 +1,8 @@
 defmodule Banco.Entidades.Conta do
+  @moduledoc """
+  Esta entidade representa a conta corrente.
+  """
+
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -11,7 +15,6 @@ defmodule Banco.Entidades.Conta do
     timestamps()
   end
 
-  @doc false
   def changeset(conta, attrs) do
     conta
     |> cast(attrs, [:current_balance])
