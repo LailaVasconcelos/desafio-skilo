@@ -6,12 +6,12 @@ defmodule BancoWeb.ContaResolverTest do
   alias BancoWeb.Resolvers.ContaResolver
 
   describe "ContaResolver" do
-    @valida_conta_attrs %{current_balance: "100"}
+    @valid_attrs  %{current_balance: "100"}
 
     def conta_fixture(attrs \\ %{}) do
       {:ok, conta} =
         attrs
-        |> Enum.into(@valida_conta_attrs)
+        |> Enum.into(@valid_attrs )
         |> ContaRepo.create_conta()
 
       conta
@@ -31,7 +31,10 @@ defmodule BancoWeb.ContaResolverTest do
         }
       }
     end
-  end
-end
 
-  
+    test "open_account/2 abre uma conta bancária com saldo" do
+      assert {:ok, conta} = ContaResolver.open_account(%{balance: "120.5"}, "")
+      assert conta.current_balance == Decimal.new("120.5")
+    end
+  end
+end 

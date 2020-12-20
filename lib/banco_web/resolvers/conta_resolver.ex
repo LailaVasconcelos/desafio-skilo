@@ -14,7 +14,8 @@ defmodule BancoWeb.Resolvers.ContaResolver do
   - params: Map com o valor do balance. Formato: %{balance: "100"}
   - _info: parâmetro que será ignorado.
   """
-  def open_account(%{balance: balance_str}, _info) do
+
+  def open_account(%{balance: balance_str}, _info) do  
     ContaRepo.create_conta(%{current_balance: Decimal.new(balance_str)})
   end
 
