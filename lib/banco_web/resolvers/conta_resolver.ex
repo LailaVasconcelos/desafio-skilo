@@ -15,8 +15,18 @@ defmodule BancoWeb.Resolvers.ContaResolver do
   - _info: parâmetro que será ignorado.
   """
 
-  def open_account(%{balance: balance_str}, _info) do  
-    ContaRepo.create_conta(%{current_balance: Decimal.new(balance_str)})
+  def open_account(%{balance: balance_str}, _info) do   
+    if Decimal.new(balance_str).sign == 1 do
+      ContaRepo.create_conta(%{current_balance: Decimal.new(balance_str)})
+    else
+      {
+        :error,
+        %{
+          code: :request_invalid,
+          message: "Não é permitido abrir uma conta corrente com saldo negativo."
+        }
+      }
+    end
   end
 
   @doc """

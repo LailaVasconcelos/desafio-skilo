@@ -36,5 +36,15 @@ defmodule BancoWeb.ContaResolverTest do
       assert {:ok, conta} = ContaResolver.open_account(%{balance: "120.5"}, "")
       assert conta.current_balance == Decimal.new("120.5")
     end
+
+    test "open_account/2 erro ao abrir uma conta corrente com saldo negativo" do
+      assert ContaResolver.open_account(%{balance: "-120.5"}, "") == {
+        :error,
+        %{
+          code: :request_invalid,
+          message: "Não é permitido abrir uma conta corrente com saldo negativo."
+        }
+      }
+    end
   end
 end 
