@@ -1,4 +1,7 @@
 defmodule Banco.Entidades.Transacao do
+  @moduledoc """
+  Esta entidade representa transação.
+  """
   use Ecto.Schema
   import Ecto.Changeset
   alias Banco.Entidades.Conta

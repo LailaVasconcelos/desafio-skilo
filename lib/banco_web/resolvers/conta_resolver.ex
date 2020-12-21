@@ -16,7 +16,6 @@ defmodule BancoWeb.Resolvers.ContaResolver do
   - params: Map com o valor do balance. Formato: %{balance: "100"}
   - _info: parâmetro que será ignorado.
   """
-
   def open_account(%{balance: balance_str}, _info) do   
     if Decimal.positive?(Decimal.new(balance_str)) do
       ContaRepo.create_conta(%{current_balance: Decimal.new(balance_str)})
@@ -37,7 +36,7 @@ defmodule BancoWeb.Resolvers.ContaResolver do
   ## Parâmetros
 
   - _parent: parâmetro que será ignorado.
-  - params: Map com o uuid da conta. Formato: %{uuid: "..."}
+  -  params: Map com o uuid da conta. Formato: %{uuid: "..."}
   - _resolution: parâmetro que será ignorado.
   """
   def account(_parent, %{uuid: uuid_conta}, _resolution) do
@@ -47,7 +46,15 @@ defmodule BancoWeb.Resolvers.ContaResolver do
       _ in Ecto.NoResultsError -> Errors.not_found("Conta")
     end
   end
-  
+
+  @doc """
+  Transfere ativos da "conta A" para "conta B".
+
+  ## Parâmetros
+
+  - params: Map com os dados da transferência. Formato: %{sender: "...", address: "...", amount: "1000"}
+  - _info: parâmetro que será ignorado.
+  """  
   def transfer_money(%{sender: uuid_conta_origem, address: uuid_conta_destino, amount: valor_str}, _info) do
     case {uuid_conta_origem, uuid_conta_destino, Decimal.new(valor_str)} do
       {origem, destino, _} when origem == destino -> {
@@ -79,14 +86,14 @@ defmodule BancoWeb.Resolvers.ContaResolver do
               }
             else
               conta_destino = ContaRepo.get_conta!(destino)
-              # Adiciona a transacao negativa na conta de origem
+              # Adiciona a transação negativa na conta de origem
               {:ok, transacao_origem} = TransacaoRepo.create_transacao(%{
                 conta_uuid: conta_origem.uuid,
                 address: conta_destino.uuid,
                 when: DateTime.utc_now,
                 amount: Decimal.mult(valor, -1)
               })
-              # Adiciona uma transacao positiva na conta de destino
+              # Adiciona uma transação positiva na conta de destino
               TransacaoRepo.create_transacao(%{
                 conta_uuid: conta_destino.uuid,
                 address: conta_origem.uuid,
