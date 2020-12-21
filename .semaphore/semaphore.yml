@@ -47,10 +47,6 @@ blocks:
         - checkout
         - sem-version elixir 1.10.4
         - cache restore
-
-      jobs:
-      - name: "Inicia o postgres"
-        commands:
         - sem-service start postgres 11 --username=postgresuser --password=postgrespw --db=banco_dev
 
       - name: "Testes Unitários"
