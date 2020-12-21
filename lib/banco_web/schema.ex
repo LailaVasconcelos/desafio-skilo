@@ -7,35 +7,32 @@ defmodule BancoWeb.Schema do
 
   alias BancoWeb.Resolvers.ContaResolver
 
-  import_types BancoWeb.Schema.DataTypes
+  import_types(BancoWeb.Schema.DataTypes)
 
   query do
-    @desc "Consulta as informações de uma conta" 
+    @desc "Consulta as informações de uma conta"
     field :account, type: :conta do
-      arg :uuid, non_null(:string)
+      arg(:uuid, non_null(:string))
 
-      resolve &ContaResolver.account/3
+      resolve(&ContaResolver.account/3)
     end
   end
 
   mutation do
-    @desc "Abre uma conta com saldo inicial" 
+    @desc "Abre uma conta com saldo inicial"
     field :open_account, type: :conta do
-      arg :balance, non_null(:string)
+      arg(:balance, non_null(:string))
 
-      resolve &ContaResolver.open_account/2
+      resolve(&ContaResolver.open_account/2)
     end
 
     @desc "Transfere ativos entre contas correntes"
     field :transfer_money, type: :transacao do
-      arg :sender, non_null(:string)
-      arg :addres, non_null(:string)
-      arg :amount, non_null(:string)
+      arg(:sender, non_null(:string))
+      arg(:addres, non_null(:string))
+      arg(:amount, non_null(:string))
 
-      resolve &ContaResolver.transfer_money/2 
+      resolve(&ContaResolver.transfer_money/2)
     end
   end
-
 end
-
-

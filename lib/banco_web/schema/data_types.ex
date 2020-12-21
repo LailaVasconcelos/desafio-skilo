@@ -16,5 +16,4 @@ defmodule BancoWeb.Schema.DataTypes do
     field :amount, :string
     field :when, :string
   end
-
 end

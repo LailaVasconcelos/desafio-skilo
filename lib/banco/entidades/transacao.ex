@@ -13,7 +13,7 @@ defmodule Banco.Entidades.Transacao do
     field :address, :binary
     field :amount, :decimal
     field :when, :naive_datetime
-    
+
     belongs_to :conta, Conta,
       foreign_key: :conta_uuid,
       references: :uuid

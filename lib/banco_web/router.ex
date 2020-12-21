@@ -8,11 +8,9 @@ defmodule BancoWeb.Router do
   scope "/" do
     pipe_through :api
 
-    forward "/graph", Absinthe.Plug,
-      schema: BancoWeb.Schema
+    forward "/graph", Absinthe.Plug, schema: BancoWeb.Schema
 
-    forward "/graphiql", Absinthe.Plug.GraphiQL,
-      schema: BancoWeb.Schema
+    forward "/graphiql", Absinthe.Plug.GraphiQL, schema: BancoWeb.Schema
   end
 
   # Enables LiveDashboard only for development

@@ -16,7 +16,7 @@ defmodule BancoWeb.Resolvers.ContaResolver do
   - params: Map com o valor do balance. Formato: %{balance: "100"}
   - _info: parâmetro que será ignorado.
   """
-  def open_account(%{balance: balance_str}, _info) do   
+  def open_account(%{balance: balance_str}, _info) do
     if Decimal.positive?(Decimal.new(balance_str)) do
       ContaRepo.create_conta(%{current_balance: Decimal.new(balance_str)})
     else
@@ -32,7 +32,7 @@ defmodule BancoWeb.Resolvers.ContaResolver do
 
   @doc """
   Obtém as informações de uma conta bancária.
-  
+
   ## Parâmetros
 
   - _parent: parâmetro que será ignorado.
@@ -54,16 +54,21 @@ defmodule BancoWeb.Resolvers.ContaResolver do
 
   - params: Map com os dados da transferência. Formato: %{sender: "...", address: "...", amount: "1000"}
   - _info: parâmetro que será ignorado.
-  """  
-  def transfer_money(%{sender: uuid_conta_origem, address: uuid_conta_destino, amount: valor_str}, _info) do
+  """
+  def transfer_money(
+        %{sender: uuid_conta_origem, address: uuid_conta_destino, amount: valor_str},
+        _info
+      ) do
     case {uuid_conta_origem, uuid_conta_destino, Decimal.new(valor_str)} do
-      {origem, destino, _} when origem == destino -> {
-        :error,
-        %{
-          code: :request_invalid,
-          message: "Não é permitido transferir dinheiro pra conta de origem."
+      {origem, destino, _} when origem == destino ->
+        {
+          :error,
+          %{
+            code: :request_invalid,
+            message: "Não é permitido transferir dinheiro pra conta de origem."
+          }
         }
-      }
+
       {origem, destino, valor} ->
         if Decimal.negative?(valor) do
           {
@@ -76,6 +81,7 @@ defmodule BancoWeb.Resolvers.ContaResolver do
         else
           try do
             conta_origem = ContaRepo.get_conta!(origem)
+
             if Decimal.negative?(Decimal.sub(conta_origem.current_balance, valor)) do
               {
                 :error,
@@ -87,23 +93,32 @@ defmodule BancoWeb.Resolvers.ContaResolver do
             else
               conta_destino = ContaRepo.get_conta!(destino)
               # Adiciona a transação negativa na conta de origem
-              {:ok, transacao_origem} = TransacaoRepo.create_transacao(%{
-                conta_uuid: conta_origem.uuid,
-                address: conta_destino.uuid,
-                when: DateTime.utc_now,
-                amount: Decimal.mult(valor, -1)
-              })
+              {:ok, transacao_origem} =
+                TransacaoRepo.create_transacao(%{
+                  conta_uuid: conta_origem.uuid,
+                  address: conta_destino.uuid,
+                  when: DateTime.utc_now(),
+                  amount: Decimal.mult(valor, -1)
+                })
+
               # Adiciona uma transação positiva na conta de destino
               TransacaoRepo.create_transacao(%{
                 conta_uuid: conta_destino.uuid,
                 address: conta_origem.uuid,
-                when: DateTime.utc_now,
-                amount: valor,
+                when: DateTime.utc_now(),
+                amount: valor
               })
+
               # Alterar o saldo da conta de origem
-              ContaRepo.update_conta(conta_origem, %{current_balance: Decimal.sub(conta_origem.current_balance, valor)})
+              ContaRepo.update_conta(conta_origem, %{
+                current_balance: Decimal.sub(conta_origem.current_balance, valor)
+              })
+
               # Alterar o saldo da conta de destino
-              ContaRepo.update_conta(conta_destino, %{current_balance: Decimal.add(conta_destino.current_balance, valor)})
+              ContaRepo.update_conta(conta_destino, %{
+                current_balance: Decimal.add(conta_destino.current_balance, valor)
+              })
+
               {:ok, transacao_origem}
             end
           rescue
@@ -113,4 +128,3 @@ defmodule BancoWeb.Resolvers.ContaResolver do
     end
   end
 end
-

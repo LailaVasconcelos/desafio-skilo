@@ -7,7 +7,11 @@ defmodule Banco.TransacaoRepoTest do
     alias Banco.Entidades.Transacao
 
     @valid_attrs %{address: "some address", amount: "120.5", when: ~N[2010-04-17 14:00:00]}
-    @update_attrs %{address: "some updated address", amount: "456.7", when: ~N[2011-05-18 15:01:01]}
+    @update_attrs %{
+      address: "some updated address",
+      amount: "456.7",
+      when: ~N[2011-05-18 15:01:01]
+    }
     @invalid_attrs %{address: nil, amount: nil, when: nil}
 
     def transacao_fixture(attrs \\ %{}) do
@@ -42,7 +46,10 @@ defmodule Banco.TransacaoRepoTest do
 
     test "update_transacao/2 with valid data updates the transacao" do
       transacao = transacao_fixture()
-      assert {:ok, %Transacao{} = transacao} = TransacaoRepo.update_transacao(transacao, @update_attrs)
+
+      assert {:ok, %Transacao{} = transacao} =
+               TransacaoRepo.update_transacao(transacao, @update_attrs)
+
       assert transacao.address == "some updated address"
       assert transacao.amount == Decimal.new("456.7")
       assert transacao.when == ~N[2011-05-18 15:01:01]
@@ -50,7 +57,10 @@ defmodule Banco.TransacaoRepoTest do
 
     test "update_transacao/2 with invalid data returns error changeset" do
       transacao = transacao_fixture()
-      assert {:error, %Ecto.Changeset{}} = TransacaoRepo.update_transacao(transacao, @invalid_attrs)
+
+      assert {:error, %Ecto.Changeset{}} =
+               TransacaoRepo.update_transacao(transacao, @invalid_attrs)
+
       assert transacao == TransacaoRepo.get_transacao!(transacao.uuid)
     end
 
