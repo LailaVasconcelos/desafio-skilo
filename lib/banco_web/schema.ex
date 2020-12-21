@@ -25,6 +25,15 @@ defmodule BancoWeb.Schema do
 
       resolve &ContaResolver.open_account/2
     end
+
+    @desc "Transfere ativos entre contas correntes"
+    field :transfer_money, type: :transacao do
+      arg :sender, non_null(:string)
+      arg :addres, non_null(:string)
+      arg :amount, non_null(:string)
+
+      resolve &ContaResolver.transfer_money/2 
+    end
   end
 
 end
