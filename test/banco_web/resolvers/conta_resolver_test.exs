@@ -3,7 +3,9 @@ defmodule BancoWeb.ContaResolverTest do
   use Banco.DataCase
 
   alias Banco.ContaRepo
+  alias Banco.TransacaoRepo
   alias BancoWeb.Resolvers.ContaResolver
+  alias Banco.Repo
 
   describe "ContaResolver" do
     @valid_attrs  %{current_balance: "100"}
@@ -18,8 +20,22 @@ defmodule BancoWeb.ContaResolverTest do
     end
 
     test "account/3 obtém as informações de uma conta corrente existente" do
-      conta = conta_fixture()
+      conta = conta_fixture() |> Repo.preload(:transactions)
       assert ContaResolver.account("", %{uuid: conta.uuid}, "") == {:ok, conta}
+    end
+
+    test "account/3 obtém as informações de uma conta corrente existente junto com as transacoes" do
+      conta = conta_fixture()
+      TransacaoRepo.create_transacao(%{
+        conta_uuid: conta.uuid,
+        address: Ecto.UUID.generate(),
+        when: DateTime.utc_now,
+        amount: Decimal.new("45")
+      })
+      assert {:ok, conta_atualizada} = ContaResolver.account("", %{uuid: conta.uuid}, "")
+      assert length(conta_atualizada.transactions) == 1
+      assert conta_atualizada.uuid == conta.uuid
+      assert conta_atualizada.current_balance == conta.current_balance
     end
 
     test "account/3 erro ao consultar uma conta corrente inexistente" do

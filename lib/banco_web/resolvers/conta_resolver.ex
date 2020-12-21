@@ -6,6 +6,7 @@ defmodule BancoWeb.Resolvers.ContaResolver do
   alias Banco.ContaRepo
   alias Banco.TransacaoRepo
   alias BancoWeb.Errors
+  alias Banco.Repo
 
   @doc """
   Abre uma conta bancária com saldo.
@@ -41,7 +42,7 @@ defmodule BancoWeb.Resolvers.ContaResolver do
   """
   def account(_parent, %{uuid: uuid_conta}, _resolution) do
     try do
-      {:ok, ContaRepo.get_conta!(uuid_conta)}
+      {:ok, ContaRepo.get_conta!(uuid_conta) |> Repo.preload(:transactions)}
     rescue
       _ in Ecto.NoResultsError -> Errors.not_found("Conta")
     end
