@@ -101,6 +101,44 @@ defmodule BancoWeb.ContaResolverTest do
       assert transacao_origem.conta_uuid == conta_origem.uuid
       assert transacao_origem.address == conta_destino.uuid
       assert transacao_origem.amount == Decimal.new("-60")
+
+      conta_origem_atualizada = ContaRepo.get_conta!(conta_origem.uuid) |> Repo.preload(:transactions)
+      assert conta_origem_atualizada.current_balance == Decimal.new("240")      
+      assert length(conta_origem_atualizada.transactions) == 1
+
+      conta_destino_atualizada = ContaRepo.get_conta!(conta_destino.uuid) |> Repo.preload(:transactions)
+      assert conta_destino_atualizada.current_balance == Decimal.new("310")      
+      assert length(conta_destino_atualizada.transactions) == 1
+    end
+
+    test "transfer_money/2 erro se a conta de origem nao existe" do
+      conta_destino = conta_fixture(%{current_balance: "250"})
+      assert ContaResolver.transfer_money(%{
+        sender: "b0963dda-5f70-4ff8-a08d-8a32064b2940",
+        address: conta_destino.uuid,
+        amount: "60"
+      }, "") == {
+        :error,
+        %{
+          code: :not_found,
+          message: "Conta não encontrado(a)"
+        }
+      }
+    end
+
+    test "transfer_money/2 erro se a conta de destino nao existe" do
+      conta_origem = conta_fixture(%{current_balance: "250"})
+      assert ContaResolver.transfer_money(%{
+        sender: conta_origem.uuid,
+        address: "b0963dda-5f70-4ff8-a08d-8a32064b2940",
+        amount: "60"
+      }, "") == {
+        :error,
+        %{
+          code: :not_found,
+          message: "Conta não encontrado(a)"
+        }
+      }
     end
   end
 end 
