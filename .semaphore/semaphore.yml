@@ -48,7 +48,7 @@ blocks:
         - sem-version elixir 1.10.4
         - cache restore
         - sem-service start postgres 11 --username=postgresuser --password=postgrespw --db=banco_dev
-
+      jobs:
       - name: "Testes Unitários"
         commands:
         - mix local.rebar --fo
